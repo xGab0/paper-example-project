@@ -38,7 +38,7 @@ dependencies {
     val paper_version = findProperty("paper_version")
 
     // Must be kept in sync with upstream!
-    // replaced tiny-remapper with the mapping-io from FabricMC
+    // replaced tiny-remapper with the newer mapping-io from FabricMC
     // https://github.com/FabricMC/mapping-io
     //
     //remapper("net.fabricmc:tiny-remapper:0.10.2:fat")
@@ -103,12 +103,6 @@ java {
             ))
         }
     }
-
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task
-    // and to the "build" task if it is present.
-    //
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
 }
 
 // configure the maven publication
