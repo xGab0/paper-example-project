@@ -1,3 +1,5 @@
+import xyz.jpenilla.runtask.task.AbstractRun
+
 plugins {
     id("java")
 
@@ -10,17 +12,20 @@ plugins {
 
     // https://github.com/jpenilla/run-task
     // Adds runServer and runDevBundleServer tasks for testing
-    //id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.0"
 
     // https://github.com/jpenilla/resource-factory
     // Generates plugin.yml based on the Gradle config
-    //id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.1.1"
 
     id("maven-publish")
 }
 
-version = findProperty("plugin_version")!!
-group = findProperty("maven_group")!!
+base {
+    version = findProperty("plugin_version")!!
+    group = findProperty("maven_group")!!
+    archivesName = "paper-example-project"
+}
 
 repositories {
     maven {
@@ -41,8 +46,8 @@ dependencies {
     // replaced tiny-remapper with the newer mapping-io from FabricMC
     // https://github.com/FabricMC/mapping-io
     //
-    //remapper("net.fabricmc:tiny-remapper:0.10.2:fat")
-    remapper("net.fabricmc:mapping-io:0.6.1")
+    remapper("net.fabricmc:tiny-remapper:0.10.2:fat")
+    //remapper("net.fabricmc:mapping-io:0.6.1")
 
     // Must be kept in sync with upstream
     // since paperweight 1.7 vineflower is now the default decompiler
@@ -84,6 +89,10 @@ java {
     tasks.withType<ProcessResources> {
         filteringCharset = "UTF-8"
 
+        // Use this code only when you won't generate the paper-plugin.yml
+        // using the resource-factory plugin but the existing file
+        // inside the resources folder
+        /*
         val minecraft_version = findProperty("minecraft_version")
         val paper_version = findProperty("paper_version")
 
@@ -98,15 +107,48 @@ java {
                 "paper_version" to paper_version
             ))
         }
+        */
     }
 }
 
+// https://docs.papermc.io/paper/dev/getting-started/paper-plugins#how-do-i-use-them
+// Defaults for name, version, and description are inherited from the Gradle project
+paperPluginYaml {
+    main = "com.example.exampleplugin.ExamplePlugin"
+    bootstrapper = "com.example.exampleplugin.ExamplePluginBootstrap"
+    loader = "com.example.exampleplugin.ExamplePluginLoader"
+    apiVersion = "1.20.5"
+    //name = "ExamplePlugin"
+    //version = "0.1-SNAPSHOT"
+    //description = "My paper plugin example"
+    authors.add("MyName")
+}
+
+// Task for the hot-swap
+// https://github.com/jpenilla/run-task/wiki/Debugging#hot-swap
+tasks.withType<AbstractRun> {
+    javaLauncher = javaToolchains.launcherFor {
+        vendor = JvmVendorSpec.ADOPTIUM
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+
+    jvmArgs(
+        //"-XX:+IgnoreUnrecognizedVMOptions",
+        //"-XX:+AllowEnhancedClassRedefinition",
+        //"-XX:+AllowRedefinitionToAddDeleteMethods"
+    )
+}
+
 // configure the maven publication
+// https://docs.gradle.org/current/userguide/publishing_maven.html
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            //artifactId = project.archives_base_name
-            //from components.java
+            groupId = "com.example.exampleplugin"
+            artifactId = project.name
+            version = "${project.version}"
+
+            from(components["java"])
 
             //artifact(tasks.remapJar)
             //artifact(tasks.remapSourcesJar)
@@ -122,5 +164,21 @@ publishing {
 
         // uncomment to publish to the local maven
         // mavenLocal()
+    }
+}
+
+tasks {
+    // https://github.com/jpenilla/run-task/wiki/Basic-Usage
+    runDevBundleServer {
+        downloadPlugins {
+            url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
+        }
+    }
+
+    // https://github.com/jpenilla/run-task/wiki/Basic-Usage
+    runServer {
+        downloadPlugins {
+            url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
+        }
     }
 }
