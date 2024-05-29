@@ -89,12 +89,15 @@ java {
     tasks.withType<ProcessResources> {
         filteringCharset = "UTF-8"
 
-        // Use this code only when you won't generate the paper-plugin.yml
-        // using the resource-factory plugin but the existing file
-        // inside the resources folder
+        // Use the entire following code only if you will not generate the file using
+        // the generator but will use the existing file in the resource folder
         /*
         val minecraft_version = findProperty("minecraft_version")
         val paper_version = findProperty("paper_version")
+
+        // exclude fabric.mod.json in resources if you are
+        // generating it with the resource-factory plugin
+        exclude("paper-plugin.yml")
 
         inputs.property("version", project.version)
         inputs.property("minecraft_version", minecraft_version)
