@@ -3,20 +3,20 @@ import xyz.jpenilla.runtask.task.AbstractRun
 plugins {
     id("java")
 
-    // https://github.com/johnrengelman/shadow/releases/tag/8.1.1
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    // https://github.com/GradleUp/shadow/releases
+    id("com.gradleup.shadow") version "8.3.0"
 
     // https://docs.papermc.io/paper/dev/userdev
     // https://plugins.gradle.org/plugin/io.papermc.paperweight.userdev
-    id("io.papermc.paperweight.userdev") version "1.7.1"
+    id("io.papermc.paperweight.userdev") version "1.7.2"
 
     // https://github.com/jpenilla/run-task
     // Adds runServer and runDevBundleServer tasks for testing
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 
     // https://github.com/jpenilla/resource-factory
     // Generates plugin.yml based on the Gradle config
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.1.1"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.1.2"
 
     id("maven-publish")
 }
@@ -124,7 +124,7 @@ paperPluginYaml {
     main = "com.example.exampleplugin.ExamplePlugin"
     bootstrapper = "com.example.exampleplugin.ExamplePluginBootstrap"
     loader = "com.example.exampleplugin.ExamplePluginLoader"
-    apiVersion = "1.20.5"
+    apiVersion = "1.21.1"
     //name = "ExamplePlugin"
     //version = "0.1-SNAPSHOT"
     //description = "My paper plugin example"
