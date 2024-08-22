@@ -10,9 +10,9 @@ import java.util.regex.Pattern;
 
 public class ExamplePluginListener implements Listener {
 
-    private static final Pattern slashPattern = Pattern.compile("\\B/\\w+");
-    private static final Pattern atPattern = Pattern.compile("\\B@\\w+");
-    private static final Pattern hashtagPattern = Pattern.compile("\\B#\\w+");
+    private static final Pattern slashPattern = Pattern.compile("\\B/[\\p{L}\\p{N}_]+");
+    private static final Pattern atPattern = Pattern.compile("\\B@[\\p{L}\\p{N}_]+");
+    private static final Pattern hashtagPattern = Pattern.compile("\\B#[\\p{L}\\p{N}_]+");
 
     private static final TextReplacementConfig slashReplaceConfig = TextReplacementConfig.builder()
             .match(slashPattern)
@@ -33,6 +33,7 @@ public class ExamplePluginListener implements Listener {
     public void cmdHighlights(AsyncChatEvent event) {
         var message = event.message();
         var modifiedMessage = message
+                .color(NamedTextColor.GRAY)
                 .replaceText(slashReplaceConfig)
                 .replaceText(atReplaceConfig)
                 .replaceText(hashtagReplaceConfig);
