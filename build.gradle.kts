@@ -4,11 +4,11 @@ plugins {
     id("java")
 
     // https://github.com/GradleUp/shadow/releases
-    id("com.gradleup.shadow") version "8.3.0"
+    id("com.gradleup.shadow") version "8.3.3"
 
     // https://docs.papermc.io/paper/dev/userdev
     // https://plugins.gradle.org/plugin/io.papermc.paperweight.userdev
-    id("io.papermc.paperweight.userdev") version "1.7.2"
+    id("io.papermc.paperweight.userdev") version "1.7.3"
 
     // https://github.com/jpenilla/run-task
     // Adds runServer and runDevBundleServer tasks for testing
@@ -16,7 +16,7 @@ plugins {
 
     // https://github.com/jpenilla/resource-factory
     // Generates plugin.yml based on the Gradle config
-    id("xyz.jpenilla.resource-factory-paper-convention") version "1.1.2"
+    id("xyz.jpenilla.resource-factory-paper-convention") version "1.2.0"
 
     id("maven-publish")
 }
@@ -46,8 +46,8 @@ dependencies {
     // replaced tiny-remapper with the newer mapping-io from FabricMC
     // https://github.com/FabricMC/mapping-io
     //
-    remapper("net.fabricmc:tiny-remapper:0.10.2:fat")
-    //remapper("net.fabricmc:mapping-io:0.6.1")
+    //remapper("net.fabricmc:tiny-remapper:0.10.2:fat")
+    remapper("net.fabricmc:mapping-io:0.6.1")
 
     // Must be kept in sync with upstream
     // since paperweight 1.7 vineflower is now the default decompiler
@@ -178,14 +178,14 @@ tasks {
     // https://github.com/jpenilla/run-task/wiki/Basic-Usage
     runDevBundleServer {
         downloadPlugins {
-            url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
+            url("https://download.luckperms.net/1556/bukkit/loader/LuckPerms-Bukkit-5.4.141.jar")
         }
     }
 
     // https://github.com/jpenilla/run-task/wiki/Basic-Usage
     runServer {
         downloadPlugins {
-            url("https://download.luckperms.net/1543/bukkit/loader/LuckPerms-Bukkit-5.4.130.jar")
+            url("https://download.luckperms.net/1556/bukkit/loader/LuckPerms-Bukkit-5.4.141.jar")
         }
     }
 }
